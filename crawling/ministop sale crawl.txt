@@ -1,0 +1,33 @@
+>>> from selenium import webdriver
+>>> from selenium.webdriver.common.keys import Keys
+>>> driver = webdriver.Firefox(executable_path='C:\\firedriver\\geckodriver.exe')
+>>> driver.get('https://www.ministop.co.kr/MiniStopHomePage/page/event/plus1.do')
+>>> elem = driver.find_element_by_class_name('pr_more')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('pr_more')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('pr_more')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('pr_more')
+>>> elem.click()
+>>> prod_class = driver.find_element_by_class_name('event_plus_list')
+>>> li_list = prod_class.find_elements_by_css_selector('li')
+>>> item_list = []
+>>> shop_name = "¹Ì´Ï½ºÅé"
+>>> for li in li_list:
+...     photo = li.find_element_by_css_selector('a').find_element_by_css_selector('img').get_attribute('src')
+...     prod_name = li.find_element_by_css_selector('a').find_element_by_css_selector('img').get_attribute('alt')
+...     prod_price = li.find_element_by_css_selector('a').find_element_by_css_selector('p').find_element_by_css_selector('strong').text + "¿ø"
+...     event = li.find_element_by_css_selector('a').find_element_by_class_name('plus11').text
+...     item_list.append([prod_name, photo, prod_price, event, shop_name])
+...
+>>> import cx_Oracle
+>>> con = cx_Oracle.connect("hr/hr")
+>>> cur = con.cursor()
+>>> sql_query = "begin "
+>>> for prod_name, photo, prod_price, event, shop_name in item_list:
+...     sql_query += """insert into t97_sale (productname, imageurl, price, event, convname)  values ('{name}', '{pho}', '{price}', '{eve}', '{shop}'); """.format(name=prod_name, pho=photo, price=prod_price, eve=event, shop=shop_name)
+...
+>>> sql_query += " end;"
+>>> cur.execute(sql_query)
+>>> cur.execute("commit")

@@ -1,0 +1,26 @@
+>>> from selenium import webdriver
+>>> from selenium.webdriver.common.keys import Keys
+>>> driver = webdriver.Firefox(executable_path='C:\\firedriver\\geckodriver.exe')
+>>> driver.get('https://www.ministop.co.kr/MiniStopHomePage/page/guide/list.do')
+>>> elem = driver.find_element_by_class_name('pr_more')
+>>> elem.click()
+>>> prod_class = driver.find_element_by_class_name('menu_list')
+>>> li_list = prod_class.find_elements_by_css_selector('li')
+>>> item_list = []
+>>> shop_name = "¹Ì´Ï½ºÅé"
+>>> for li in li_list:
+...     photo = li.find_element_by_css_selector('a').find_element_by_css_selector('img').get_attribute('src')
+...     prod_name = li.find_element_by_css_selector('a').find_element_by_css_selector('img').get_attribute('alt')
+...     prod_price = li.find_element_by_css_selector('a').find_element_by_css_selector('p').find_element_by_css_selector('strong').text + "¿ø"
+...     item_list.append([prod_name, photo, prod_price, shop_name])
+...
+>>> sql_query = "begin "
+>>> for prod_name, photo, prod_price, shop_name in item_list:
+...     sql_query += """insert into t97_pb (productname, imageurl, price, convname)  values ('{name}', '{pho}', '{price}', '{shop}'); """.format(name=prod_name, pho=photo, price=prod_price, shop=shop_name)
+...
+>>> sql_query += " end;"
+>>> import cx_Oracle
+>>> con = cx_Oracle.connect("hr/hr")
+>>> cur = con.cursor()
+>>> cur.execute(sql_query)
+>>> cur.execute("commit")

@@ -1,0 +1,64 @@
+Python 3.6.2 (v3.6.2:5fd33b5, Jul  8 2017, 04:57:36) [MSC v.1900 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from selenium import webdriver
+>>> from selenium.webdriver.common.keys import Keys
+>>> driver = webdriver.Firefox(executable_path='C:\\firedriver\\geckodriver.exe')
+>>> driver.get('http://cu.bgfretail.com/event/plus.do?category=event&depth2=1&sf=N')
+>>> elem = driver.find_element_by_class_name('eventInfo_02')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('eventInfo_01')
+>>> elem.click()
+>>> prod_class = driver.find_element_by_class_name('prodListWrap')
+>>> li_list = prod_class.find_elements_by_css_selector('li')
+>>> len(li_list)
+80
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> elem = driver.find_element_by_class_name('prodListBtn-w')
+>>> elem.click()
+>>> prod_class = driver.find_element_by_class_name('prodListWrap')
+>>> li_list = prod_class.find_elements_by_css_selector('li')
+>>> len(li_list)
+1090
+>>> item_list = []
+>>> shop_name = "CU"
+>>> for li in li_list[::2]:
+...     photo = li.find_element_by_class_name('photo').find_element_by_css_selector('img').get_attribute('src')
+...     prod_name = li.find_element_by_class_name('prodName').text
+...     prod_price = li.find_element_by_class_name('prodPrice').text
+...     event = li.find_element_by_css_selector('ul').text
+...     item_list.append([prod_name, photo, prod_price, event, shop_name])
+...
+>>> import cx_Oracle
+>>> con = cx_Oracle.connect("hr/hr")
+>>> cur = con.cursor()
+>>> sql_query = "begin "
+>>> for prod_name, photo, prod_price, event, shop_name in item_list:
+...     sql_query += """insert into t97_sale (productname, imageurl, price, event, convname) values ('{name}', '{pho}', '{price}', '{eve}', '{shop}'); """.format(name=prod_name, pho=photo, price=prod_price, eve=event, shop=shop_name)
+...
+>>> sql_query += " end;"
+>>> sql_query
+>>> cur.execute(sql_query)
+>>> cur.execute("commit")
